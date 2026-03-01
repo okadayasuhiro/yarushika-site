@@ -54,4 +54,4 @@
 
 ご質問やご意見は、以下までご連絡ください。
 
-メール: yarushika.app@gmail.com
+メール: yarushika.todo@gmail.com

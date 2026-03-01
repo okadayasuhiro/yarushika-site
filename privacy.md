@@ -57,4 +57,4 @@
 
 プライバシーに関するご質問やデータ削除のご依頼は、以下までご連絡ください。
 
-メール: yarushika.app@gmail.com
+メール: yarushika.todo@gmail.com
