@@ -6,7 +6,7 @@
 
 アプリに関するご質問、不具合の報告、ご要望などは以下までお気軽にご連絡ください。
 
-**メール**: yarushika.app@gmail.com
+**メール**: yarushika.todo@gmail.com
 
 ## よくある質問
 
