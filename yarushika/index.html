@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シッカリToDo!（通称 シカDO!）- 中高生のためのタスク管理アプリ</title>
+    <meta name="description" content="シッカリToDo!（通称 シカDO!）は、中学生・高校生のためのタスク管理アプリ。30 日でタスク管理が身につく「30 日チャレンジ」を搭載。買い切り ¥300。">
+    <meta property="og:title" content="シッカリToDo!（通称 シカDO!）">
+    <meta property="og:description" content="中高生のためのタスク管理アプリ。30 日でタスク管理が身につく。">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='80'%3E%F0%9F%A6%8C%3C/text%3E%3C/svg%3E">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #F5E6D3;
+            --accent: #F2B5A1;
+            --accent-deep: #EB9178;
+            --success: #A8D5BA;
+            --card-bg: #FFFFFF;
+            --bg-soft: #FAF1E5;
+            --shadow-card: 0 2px 12px rgba(120, 80, 50, 0.08);
+            --shadow-deep: 0 12px 28px rgba(120, 80, 50, 0.14);
+            --shadow-cta: 0 6px 16px rgba(235, 145, 120, 0.38);
+            --text: #3a2f28;
+            --text-secondary: #7a6e64;
+            --focus-ring: 0 0 0 3px rgba(235, 145, 120, 0.4);
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: "M PLUS Rounded 1c", -apple-system, "Hiragino Sans", sans-serif;
+            font-weight: 400;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.85;
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: 100%;
+            -webkit-font-smoothing: antialiased;
+            font-feature-settings: "palt";
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(circle, rgba(120, 80, 50, 0.035) 1px, transparent 1.5px),
+                radial-gradient(circle, rgba(120, 80, 50, 0.022) 1px, transparent 2px);
+            background-size: 32px 32px, 47px 47px;
+            background-position: 0 0, 16px 16px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        body > * { position: relative; z-index: 1; }
+
+        h1, h2 {
+            font-weight: 800;
+            line-height: 1.5;
+            letter-spacing: -0.005em;
+            margin: 0;
+            text-wrap: balance;
+            line-break: strict;
+        }
+        p { margin: 0.6em 0; line-break: strict; text-wrap: pretty; }
+        a { color: var(--accent-deep); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        :focus-visible {
+            outline: none;
+            box-shadow: var(--focus-ring);
+            border-radius: 8px;
+        }
+
+        .nobr { display: inline-block; white-space: nowrap; }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 8px;
+            background: var(--accent-deep);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            z-index: 100;
+            transition: top 0.2s;
+        }
+        .skip-link:focus { top: 8px; text-decoration: none; }
+
+        .underline {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M2,7 Q25,2 50,5 T98,4' stroke='%23EB9178' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 0 100%;
+            background-size: 100% 0.45em;
+            padding-bottom: 0.15em;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─────────── HERO ─────────── */
+        .hero {
+            background: var(--bg);
+            padding: 60px 24px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-inner {
+            max-width: 760px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            align-items: center;
+            animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+        @media (min-width: 600px) {
+            .hero-inner { grid-template-columns: 1.1fr 1fr; gap: 32px; }
+        }
+        .brand {
+            font-size: 0.82em;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 0.04em;
+            margin-bottom: 8px;
+        }
+        .hero h1 {
+            font-size: clamp(1.9em, 6vw, 2.4em);
+            line-height: 1.45;
+            margin: 0 0 16px;
+            color: var(--text);
+        }
+        .hero h1 .accent { color: var(--accent-deep); }
+        .hero .sub {
+            color: var(--text-secondary);
+            font-size: 1.02em;
+            margin: 0 0 22px;
+            line-height: 1.7;
+        }
+        .cta-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 1em;
+            box-shadow: var(--shadow-cta);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(235, 145, 120, 0.5);
+            text-decoration: none;
+        }
+        .cta-meta {
+            display: block;
+            font-size: 0.78em;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero-deer {
+            width: clamp(180px, 38vw, 280px);
+            height: auto;
+            filter: drop-shadow(0 8px 18px rgba(120, 80, 50, 0.22));
+            transform: rotate(-3deg);
+        }
+
+        /* ─────────── 30 日チャレンジ メインカード ─────────── */
+        .challenge-section {
+            background: var(--bg-soft);
+            padding: 56px 24px;
+        }
+        .challenge-inner {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .challenge-card {
+            background: white;
+            border-radius: 24px;
+            padding: 36px 28px;
+            box-shadow: var(--shadow-deep);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .challenge-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-deep), var(--success));
+        }
+        .challenge-eyebrow {
+            display: inline-block;
+            background: var(--accent-soft, rgba(242, 181, 161, 0.18));
+            color: var(--accent-deep);
+            font-weight: 800;
+            font-size: 0.82em;
+            padding: 6px 14px;
+            border-radius: 999px;
+            letter-spacing: 0.04em;
+            margin-bottom: 16px;
+        }
+        .challenge-card h2 {
+            font-size: clamp(1.4em, 4.5vw, 1.8em);
+            margin: 0 0 14px;
+            line-height: 1.5;
+        }
+        .challenge-card p {
+            font-size: 1em;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin: 0 0 24px;
+        }
+        .challenge-link {
+            display: inline-block;
+            background: white;
+            color: var(--accent-deep);
+            border: 2px solid var(--accent-deep);
+            padding: 12px 26px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 0.95em;
+            transition: background 0.2s, color 0.2s;
+        }
+        .challenge-link:hover {
+            background: var(--accent-deep);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* ─────────── ハイライト 3 つ ─────────── */
+        .features-section {
+            background: var(--bg);
+            padding: 48px 24px 56px;
+        }
+        .features-inner {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .features-section h2 {
+            font-size: clamp(1.3em, 4vw, 1.6em);
+            text-align: center;
+            margin: 0 0 28px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+        @media (min-width: 600px) {
+            .feature-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        }
+        .feature-card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px 20px;
+            box-shadow: var(--shadow-card);
+        }
+        .feature-card .label {
+            font-weight: 800;
+            font-size: 0.82em;
+            color: var(--accent-deep);
+            margin-bottom: 6px;
+            letter-spacing: 0.04em;
+        }
+        .feature-card .title {
+            font-weight: 700;
+            font-size: 1.05em;
+            color: var(--text);
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        .feature-card .desc {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* ─────────── フッタ ─────────── */
+        footer {
+            background: var(--bg);
+            padding: 32px 24px 48px;
+            text-align: center;
+            border-top: 1px solid rgba(120, 80, 50, 0.08);
+        }
+        footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px 24px;
+            margin-bottom: 18px;
+        }
+        footer .links a {
+            color: var(--text-secondary);
+            font-weight: 700;
+            font-size: 0.92em;
+        }
+        footer .copy {
+            color: var(--text-secondary);
+            font-size: 0.82em;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <a href="#main" class="skip-link">本文へスキップ</a>
+
+    <main id="main">
+        <!-- ============ Hero ============ -->
+        <header class="hero">
+            <div class="hero-inner">
+                <div>
+                    <div class="brand">通称 シカDO!</div>
+                    <h1>シッカリToDo!<br><span class="accent underline">中高生のためのタスク管理</span></h1>
+                    <p class="sub">毎日のやることを書いて、忘れない。少しずつできることを増やしながら、自分のペースで。</p>
+                    <a class="cta-primary" href="https://apps.apple.com/jp/app/id6759852949">📱 App Store でダウンロード</a>
+                    <small class="cta-meta">iPhone / iOS 17.4+ / 買い切り ¥300</small>
+                </div>
+                <div class="hero-visual">
+                    <img class="hero-deer" src="images/deer.png" alt="ヤルシカ先輩">
+                </div>
+            </div>
+        </header>
+
+        <!-- ============ 30 日チャレンジ メイン入口 ============ -->
+        <section class="challenge-section">
+            <div class="challenge-inner">
+                <div class="challenge-card">
+                    <span class="challenge-eyebrow">特長</span>
+                    <h2>30 日で、タスク管理が<br><span class="nobr">身につく。</span></h2>
+                    <p>最初は 1 つの画面だけ。慣れてきたら次の機能が解禁される、3 段階のしくみ。<br>失敗しても責めない、ヤルシカ先輩が 30 日伴走します。</p>
+                    <a class="challenge-link" href="/30day-challenge">30 日チャレンジって何？ →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ ハイライト 3 つ ============ -->
+        <section class="features-section">
+            <div class="features-inner">
+                <h2>なぜ、シッカリToDo! ？</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="label">📝 シンプル</div>
+                        <div class="title">最初は書くだけ</div>
+                        <p class="desc">画面はなんでもボックスだけ。「水を飲む」でも OK。書く＝忘れない、それだけ。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="label">🦌 やさしい</div>
+                        <div class="title">責めない設計</div>
+                        <p class="desc">サボってもお守り（Streak Freeze）が守る。ヤルシカ先輩はツンデレで、責めません。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="label">🔒 安心</div>
+                        <div class="title">買い切り・広告なし</div>
+                        <p class="desc">¥300 で永久に。月額課金・広告・個人情報取得、すべてなし。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============ Footer ============ -->
+    <footer>
+        <nav class="links" aria-label="フッタナビゲーション">
+            <a href="/30day-challenge">30 日チャレンジ</a>
+            <a href="/privacy">プライバシーポリシー</a>
+            <a href="/terms">利用規約</a>
+            <a href="/support">サポート</a>
+        </nav>
+        <p class="copy">© シッカリToDo!（通称 シカDO!）</p>
+    </footer>
+</body>
+</html>

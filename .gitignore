@@ -1,0 +1,6 @@
+# macOS
+.DS_Store
+
+# 画像のローカル作業バックアップ（公開不要）
+yarushika/images/_backup_opaque/
+yarushika/images/*-original.png
